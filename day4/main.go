@@ -8,3 +8,49 @@
 
 // You can modify the input array in-place.
 package main
+
+func sort(L []int) {
+	// O(n^2)
+	for i := 0; i < len(L); i++ {
+		for j := 1; j < len(L)-i; j++ {
+			if L[j] < L[j-1] {
+				temp := L[j]
+				L[j] = L[j-1]
+				L[j-1] = temp
+			}
+		}
+	}
+}
+
+// current solution is O(n^2)
+func findLowestPositive(L []int) int {
+	isFirstPositive := true
+	// O(n ^ 2)
+	sort(L)
+
+	// O(n)
+	for i := range L {
+		if L[i] < 1 {
+			continue
+		}
+		if isFirstPositive {
+			isFirstPositive = false
+			continue
+		}
+		ep := L[i] - 1
+		en := L[i] + 1
+
+		if i > 0 {
+			if L[i-1] != ep {
+				return ep
+			}
+		}
+
+		if i < len(L)-1 {
+			if L[i+1] != en {
+				return en
+			}
+		}
+	}
+	return L[len(L)-1] + 1
+}
